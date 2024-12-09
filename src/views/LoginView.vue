@@ -18,19 +18,26 @@
 
 <script setup>
 import PocketBase from "pocketbase";
+import { useEncryptionKeyStore } from "@/stores/encryptionKey";
 
 const pb = new PocketBase(import.meta.env.VITE_PB_URL);
 const email = ref("");
 const password = ref("");
 const router = useRouter();
+const encryptionKeyStore = useEncryptionKeyStore();
 
 const handleLogin = async () => {
   console.log(email.value, password.value);
-  const userData = await pb
-    .collection("users")
-    .authWithPassword(email.value, password.value);
-  console.log(userData);
-  router.push("/");
+  try {
+    const userData = await pb
+      .collection("users")
+      .authWithPassword(email.value, password.value);
+    encryptionKeyStore.key = password.value;
+    console.log(userData);
+    router.push("/");
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 
