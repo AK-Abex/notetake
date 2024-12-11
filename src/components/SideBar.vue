@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-64 border-r bg-background">
+  <div class="h-screen w-64 border-r bg-background relative">
     <div class="flex h-full flex-col">
       <div class="flex h-16 items-center px-4">
         <h1 class="text-2xl font-bold">PocketNotes</h1>
@@ -26,6 +26,14 @@
           Dashboard
         </Button>
       </div> -->
+
+      <Button
+        class="rounded-full absolute bottom-4 right-4"
+        size="icon"
+        @click="handleLogout"
+      >
+        <LucideLogOut class="h-4 w-4" />
+      </Button>
     </div>
   </div>
 </template>
@@ -38,6 +46,10 @@ import {
   Settings,
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+import PocketBase from "pocketbase";
+
+const pb = new PocketBase(import.meta.env.VITE_PB_URL);
+const router = useRouter();
 
 const navItems = [
   {
@@ -56,6 +68,11 @@ const navItems = [
     icon: Settings,
   },
 ];
+
+const handleLogout = () => {
+  pb.authStore.clear();
+  router.push("/login");
+};
 </script>
 
 <style scoped>

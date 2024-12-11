@@ -11,13 +11,18 @@
     <div class="flex flex-wrap gap-4">
       <template v-for="note in notes" :key="note.id">
         <div
-          class="border p-4 rounded-md mb-4 max-w-[200px] w-full cursor-pointer"
+          class="border p-4 rounded-md mb-4 max-w-[200px] w-full cursor-pointer bg-background h-[150px] flex flex-col justify-between"
           @click="router.push(`/document/${note.id}`)"
         >
           <h2 class="text-lg font-bold">{{ note.title }}</h2>
-          <p class="text-xs text-gray-500 truncate">
-            {{ note.content }}
-          </p>
+          <div
+            class="text-xs text-gray-500 text-ellipsis overflow-hidden flex-1 relative"
+          >
+            {{ note.raw_text }}
+            <div
+              class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background to-transparent"
+            ></div>
+          </div>
         </div>
       </template>
     </div>
